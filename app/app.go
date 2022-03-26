@@ -4,22 +4,9 @@ import (
 	"bufio"
 	"flag"
 	"os"
+
+	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
 )
-
-type MessageOptions struct {
-	FilePath       string
-	SampleMessage  string
-	MessageCount   int `validate:"required"`
-	DelayInSeconds int
-}
-
-type AwsOptions struct {
-	AccessKey   string
-	SecretKey   string
-	Region      string `validate:"required"`
-	QueueUrl    string
-	SnsTopicArn string
-}
 
 type Cli struct {
 	MessageOptions MessageOptions
@@ -52,6 +39,8 @@ func NewCli() Cli {
 }
 
 func (cli Cli) Run() {
+	validator.NewValidator()
+
 	if cli.MessageOptions.FilePath == "" {
 		colorizedText(ColorGreen, "Insert a sample message.")
 		input := bufio.NewScanner(os.Stdin)
@@ -59,5 +48,6 @@ func (cli Cli) Run() {
 		cli.MessageOptions.SampleMessage = input.Text()
 	}
 
+	cli.MessageOptions.validate()
 	// call business func.
 }
