@@ -1,4 +1,4 @@
-package app
+package helper
 
 import "fmt"
 
@@ -13,10 +13,10 @@ const (
 	ColorReset        = "\u001b[0m"
 )
 
-func colorizedText(color Color, message string) {
+func ColorizedText(color Color, message string) {
 	fmt.Println(string(color), message, string(ColorReset))
 }
 
-func errorText(message string) {
+func ErrorText(message string) {
 	fmt.Println(ColorRed, message, string(ColorReset))
 }

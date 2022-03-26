@@ -1,6 +1,9 @@
-package app
+package publisher
 
-import "github.com/keremdokumaci/sqs-random-message-generator/app/validator"
+import (
+	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
+	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
+)
 
 type AwsOptions struct {
 	AccessKey   string
@@ -12,7 +15,7 @@ type AwsOptions struct {
 
 func (a AwsOptions) validate() {
 	if a.QueueUrl == "" && a.SnsTopicArn == "" {
-		errorText("Queue Url or Sns Topic Arn must be specified !")
+		helper.ErrorText("Queue Url or Sns Topic Arn must be specified !")
 	}
 
 	hasError, errorFields := validator.CustomValidator.ValidateStruct(a)
@@ -20,7 +23,7 @@ func (a AwsOptions) validate() {
 		for _, field := range errorFields {
 			switch field {
 			case "Region":
-				errorText("Region must be specified !")
+				helper.ErrorText("Region must be specified !")
 			}
 		}
 	}
