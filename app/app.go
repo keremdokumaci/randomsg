@@ -39,6 +39,7 @@ func NewCli() Cli {
 }
 
 func (cli Cli) Run() {
+	// Initialize services, helpers
 	validator.NewValidator()
 
 	if cli.MessageOptions.FilePath == "" {
@@ -48,6 +49,7 @@ func (cli Cli) Run() {
 		cli.MessageOptions.SampleMessage = input.Text()
 	}
 
+	// validation
 	cli.MessageOptions.validate()
-	// call business func.
+	cli.AwsOptions.validate()
 }
