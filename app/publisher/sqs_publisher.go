@@ -22,7 +22,7 @@ func (p SqsPublisher) Publish(message MessageOptions) {
 func (p SqsPublisher) GetCredentials() {
 	accessKey := flag.String("accessKey", "", "access key for aws")
 	secretKey := flag.String("secretKey", "", "secret key for aws")
-	region := flag.String("region", "", "region for related service")
+	region := flag.String("region", "", "aws region")
 	queueUrl := flag.String("queue", "", "queue url")
 	flag.Parse()
 

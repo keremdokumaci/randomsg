@@ -20,6 +20,8 @@ func NewCli() Cli {
 	var sampleMessage string
 	filePath := flag.String("file", "", "message option file")
 	publisherType := flag.String("service", "", "service to push message (like sqs or sns)")
+	messageCount := flag.Int("count", 0, "message count to push")
+	delayInSeconds := flag.Int("delay", 0, "delay in seconds for each push")
 	flag.Parse()
 
 	if *filePath == "" {
@@ -31,8 +33,10 @@ func NewCli() Cli {
 
 	cli := Cli{
 		MessageOptions: publisher.MessageOptions{
-			FilePath:      *filePath,
-			SampleMessage: sampleMessage,
+			FilePath:       *filePath,
+			SampleMessage:  sampleMessage,
+			MessageCount:   *messageCount,
+			DelayInSeconds: *delayInSeconds,
 		},
 		PublisherType: publisher.PublisherType(*publisherType),
 	}
