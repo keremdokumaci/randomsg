@@ -16,3 +16,7 @@ const (
 func colorizedText(color Color, message string) {
 	fmt.Println(string(color), message, string(ColorReset))
 }
+
+func errorText(message string) {
+	fmt.Println(ColorRed, message, string(ColorReset))
+}
