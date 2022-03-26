@@ -10,7 +10,7 @@ func NewSqsPublisher() SqsPublisher {
 	return SqsPublisher{}
 }
 
-func (p SqsPublisher) Publish(message string) {
+func (p SqsPublisher) Publish(message MessageOptions) {
 
 }
 

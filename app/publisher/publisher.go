@@ -8,7 +8,7 @@ const (
 )
 
 type IPublisher interface {
-	Publish(message string)
+	Publish(message MessageOptions)
 	GetCredentials()
 }
 
