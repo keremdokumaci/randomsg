@@ -11,7 +11,7 @@ type MessageOptions struct {
 
 func (m MessageOptions) validate() {
 	if m.FilePath == "" && m.SampleMessage == "" {
-		errorText("Should specify file path or sample message !")
+		errorText("Must specify file path or sample message !")
 	}
 
 	hasError, errorFields := validator.CustomValidator.ValidateStruct(m)
@@ -19,7 +19,7 @@ func (m MessageOptions) validate() {
 		for _, field := range errorFields {
 			switch field {
 			case "MessageCount":
-				errorText("Message Count should be greater than zero !")
+				errorText("Message Count must be greater than zero !")
 			}
 		}
 	}
