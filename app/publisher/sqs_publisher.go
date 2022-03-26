@@ -7,7 +7,9 @@ type SqsPublisher struct {
 }
 
 func NewSqsPublisher() SqsPublisher {
-	return SqsPublisher{}
+	publisher := SqsPublisher{}
+	publisher.GetCredentials()
+	return publisher
 }
 
 func (p SqsPublisher) Publish(message MessageOptions) {

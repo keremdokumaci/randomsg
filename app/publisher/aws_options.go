@@ -1,6 +1,8 @@
 package publisher
 
 import (
+	"os"
+
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
 )
@@ -24,6 +26,7 @@ func (a AwsOptions) validate() {
 			switch field {
 			case "Region":
 				helper.ErrorText("Region must be specified !")
+				os.Exit(1)
 			}
 		}
 	}

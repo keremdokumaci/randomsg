@@ -1,5 +1,11 @@
 package publisher
 
+import (
+	"os"
+
+	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
+)
+
 type PublisherType string
 
 const (
@@ -13,7 +19,7 @@ type IPublisher interface {
 }
 
 type Publisher struct {
-	publisher IPublisher
+	Publisher IPublisher
 }
 
 func NewPublisher(publisherType PublisherType) Publisher {
@@ -21,9 +27,10 @@ func NewPublisher(publisherType PublisherType) Publisher {
 
 	switch publisherType {
 	case AwsSQS:
-		p.publisher = NewSqsPublisher()
+		p.Publisher = NewSqsPublisher()
 	default:
-		panic("Couldn't find publisher !")
+		helper.ErrorText("Couldn't find publisher !")
+		os.Exit(1)
 	}
 
 	return p
