@@ -1,6 +1,9 @@
 package publisher
 
-import "flag"
+import (
+	"flag"
+	"os"
+)
 
 type SqsPublisher struct {
 	Options AwsOptions
@@ -30,5 +33,8 @@ func (p SqsPublisher) GetCredentials() {
 		SecretKey: *secretKey,
 	}
 
-	p.Options.validate()
+	hasValidationErr := p.Options.validate()
+	if hasValidationErr {
+		os.Exit(1)
+	}
 }
