@@ -7,14 +7,14 @@ import (
 
 type MessageOptions struct {
 	FilePath       string
-	SampleMessage  string
+	MessageFormat  string
 	MessageCount   int `validate:"gt=0"`
 	DelayInSeconds int
 }
 
 func (m MessageOptions) Validate() bool {
-	if m.FilePath == "" && m.SampleMessage == "" {
-		helper.ErrorText("Must specify file path or sample message !")
+	if m.FilePath == "" && m.MessageFormat == "" {
+		helper.ErrorText("Must specify file path or message format!")
 		return true
 	}
 

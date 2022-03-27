@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"os"
-	"time"
 
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/publisher"
@@ -13,33 +12,48 @@ import (
 
 type Cli struct {
 	MessageOptions publisher.MessageOptions
-	PublisherType  publisher.PublisherType
+	Publisher      publisher.Publisher
 }
 
 func NewCli() Cli {
-	var sampleMessage string
-	filePath := flag.String("file", "", "message option file")
+	cli := Cli{}
+
+	filePath := flag.String("file", "", "message format rules file")
 	publisherType := flag.String("service", "", "service to push message (like sqs or sns)")
 	messageCount := flag.Int("count", 0, "message count to push")
 	delayInSeconds := flag.Int("delay", 0, "delay in seconds for each push")
+
+	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType))
+
+	awsOptions := publisher.AwsOptions{}
+
+	if cli.Publisher.Type == publisher.AwsSQS || cli.Publisher.Type == publisher.AwsSNS {
+		flag.StringVar(&awsOptions.AccessKey, "accessKey", "", "access key for aws")
+		flag.StringVar(&awsOptions.SecretKey, "secretKey", "", "secret key for aws")
+		flag.StringVar(&awsOptions.Region, "region", "", "aws region")
+	}
+
+	if cli.Publisher.Type == publisher.AwsSQS {
+		flag.StringVar(&awsOptions.QueueUrl, "queue", "", "queue url")
+		cli.Publisher.Publisher.SetCredentials(awsOptions)
+	}
+
 	flag.Parse()
 
-	if *filePath == "" {
-		helper.ColorizedText(helper.ColorGreen, "Insert a sample message.")
-		input := bufio.NewScanner(os.Stdin)
-		input.Scan()
-		sampleMessage = input.Text()
+	messageOptions := publisher.MessageOptions{
+		FilePath:       *filePath,
+		MessageCount:   *messageCount,
+		DelayInSeconds: *delayInSeconds,
 	}
 
-	cli := Cli{
-		MessageOptions: publisher.MessageOptions{
-			FilePath:       *filePath,
-			SampleMessage:  sampleMessage,
-			MessageCount:   *messageCount,
-			DelayInSeconds: *delayInSeconds,
-		},
-		PublisherType: publisher.PublisherType(*publisherType),
+	if *filePath == "" {
+		helper.ColorizedText(helper.ColorGreen, "Insert a message format.")
+		input := bufio.NewScanner(os.Stdin)
+		input.Scan()
+		messageOptions.MessageFormat = input.Text()
 	}
+
+	cli.MessageOptions = messageOptions
 
 	return cli
 }
@@ -55,8 +69,5 @@ func (cli Cli) Run() {
 	}
 
 	// publish
-	publisher.NewPublisher(cli.PublisherType).Publisher.Publish(cli.MessageOptions)
-
-	time.Sleep(2)
 	os.Exit(1)
 }

@@ -15,11 +15,12 @@ const (
 
 type IPublisher interface {
 	Publish(message MessageOptions)
-	GetCredentials()
+	SetCredentials(credentials interface{})
 }
 
 type Publisher struct {
 	Publisher IPublisher
+	Type      PublisherType
 }
 
 func NewPublisher(publisherType PublisherType) Publisher {
@@ -28,6 +29,7 @@ func NewPublisher(publisherType PublisherType) Publisher {
 	switch publisherType {
 	case AwsSQS:
 		p.Publisher = NewSqsPublisher()
+		p.Type = AwsSQS
 	default:
 		helper.ErrorText("Couldn't find publisher !")
 		os.Exit(1)
