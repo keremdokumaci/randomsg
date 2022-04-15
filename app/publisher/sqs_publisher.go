@@ -53,7 +53,7 @@ func (p SqsPublisher) Publish(message MessageOptions) {
 		output, err := p.client.SendMessage(ctx, &sqs.SendMessageInput{
 			QueueUrl:          &p.options.QueueUrl,
 			MessageAttributes: map[string]types.MessageAttributeValue{},
-			MessageBody:       aws.String(message.MessageFormat),
+			MessageBody:       aws.String(""),
 		})
 
 		if err != nil {
@@ -71,15 +71,5 @@ func (p SqsPublisher) Publish(message MessageOptions) {
 }
 
 func (p SqsPublisher) SetCredentials(credentials interface{}) {
-	awsCreds, ok := credentials.(AwsOptions)
-	if !ok {
-		helper.ErrorText("couldn't get AWS related parameters ! Please check the parameters or run --help to see details !")
-		os.Exit(1)
-	}
-	hasValidationErr := awsCreds.validate()
-	if hasValidationErr {
-		os.Exit(1)
-	}
-
-	p.options = awsCreds
+	p.options = credentials.(AwsOptions)
 }
