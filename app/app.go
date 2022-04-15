@@ -1,6 +1,7 @@
 package app
 
 import (
+	"bufio"
 	"flag"
 	"os"
 
@@ -15,6 +16,8 @@ type Cli struct {
 }
 
 func NewCli() Cli {
+	// Initialize services, helpers
+	validator.NewValidator()
 	cli := Cli{}
 
 	filePath := flag.String("file", "", "message format rules file")
@@ -26,7 +29,6 @@ func NewCli() Cli {
 	region := flag.String("region", "", "region")
 	queueUrl := flag.String("queue", "", "queue url")
 	topic := flag.String("topic", "", "topic")
-
 	flag.Parse()
 
 	awsOptions := publisher.AwsOptions{
@@ -36,10 +38,21 @@ func NewCli() Cli {
 		Region:      *region,
 		SnsTopicArn: *topic,
 	}
-	messageOptions := publisher.MessageOptions{
-		FilePath:       *filePath,
-		MessageCount:   *messageCount,
-		DelayInSeconds: *delayInSeconds,
+
+	if *filePath == "" {
+		helper.ColorizedText(helper.ColorGreen, "Input a sample message.")
+		input := bufio.NewScanner(os.Stdin)
+		input.Scan()
+		cli.MessageOptions.MessageFormat = input.Text()
+	}
+
+	cli.MessageOptions.FilePath = *filePath
+	cli.MessageOptions.MessageCount = *messageCount
+	cli.MessageOptions.DelayInSeconds = *delayInSeconds
+
+	hasValidationErr := cli.MessageOptions.Validate()
+	if hasValidationErr {
+		os.Exit(1)
 	}
 
 	var options interface{}
@@ -49,25 +62,16 @@ func NewCli() Cli {
 		options = awsOptions
 		break
 	default:
-		helper.ErrorText("other services are not supported yet !")
+		helper.ErrorText("Other than SQS and SNS are not supported yet !")
 		os.Exit(1)
 	}
 
 	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType), options)
-	cli.MessageOptions = messageOptions
 
 	return cli
 }
 
 func (cli Cli) Run() {
-	// Initialize services, helpers
-	validator.NewValidator()
-
-	// message option validation
-	hasValidationErr := cli.MessageOptions.Validate()
-	if hasValidationErr {
-		os.Exit(1)
-	}
 
 	// publish
 	os.Exit(1)
