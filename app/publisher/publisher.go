@@ -23,8 +23,9 @@ func NewPublisher(publisherType PublisherType, credentials interface{}) IPublish
 
 	switch publisherType {
 	case AwsSQS:
+		awsOptions := ConvertCredentials[AwsOptions](credentials)
 		p = NewSqsPublisher()
-		p.SetCredentials(ConvertCredentials[AwsOptions](credentials))
+		p.SetCredentials(awsOptions)
 	default:
 		helper.ErrorText("Couldn't find publisher !")
 		os.Exit(1)
