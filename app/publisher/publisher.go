@@ -18,18 +18,13 @@ type IPublisher interface {
 	SetCredentials(credentials interface{})
 }
 
-type Publisher struct {
-	Publisher IPublisher
-	Type      PublisherType
-}
-
-func NewPublisher(publisherType PublisherType) Publisher {
-	p := Publisher{}
+func NewPublisher(publisherType PublisherType, credentials interface{}) IPublisher {
+	var p IPublisher
 
 	switch publisherType {
 	case AwsSQS:
-		p.Publisher = NewSqsPublisher()
-		p.Type = AwsSQS
+		p = NewSqsPublisher()
+		p.SetCredentials(credentials)
 	default:
 		helper.ErrorText("Couldn't find publisher !")
 		os.Exit(1)

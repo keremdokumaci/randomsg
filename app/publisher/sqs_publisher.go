@@ -71,9 +71,15 @@ func (p SqsPublisher) Publish(message MessageOptions) {
 }
 
 func (p SqsPublisher) SetCredentials(credentials interface{}) {
-	p.options = credentials.(AwsOptions)
-	hasValidationErr := p.options.validate()
+	awsCreds, ok := credentials.(AwsOptions)
+	if !ok {
+		helper.ErrorText("couldn't get AWS related parameters ! Please check the parameters or run --help to see details !")
+		os.Exit(1)
+	}
+	hasValidationErr := awsCreds.validate()
 	if hasValidationErr {
 		os.Exit(1)
 	}
+
+	p.options = awsCreds
 }

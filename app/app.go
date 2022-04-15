@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bufio"
 	"flag"
 	"os"
 
@@ -12,7 +11,7 @@ import (
 
 type Cli struct {
 	MessageOptions publisher.MessageOptions
-	Publisher      publisher.Publisher
+	Publisher      publisher.IPublisher
 }
 
 func NewCli() Cli {
@@ -22,37 +21,39 @@ func NewCli() Cli {
 	publisherType := flag.String("service", "", "service to push message (like sqs or sns)")
 	messageCount := flag.Int("count", 0, "message count to push")
 	delayInSeconds := flag.Int("delay", 0, "delay in seconds for each push")
-
-	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType))
-
-	awsOptions := publisher.AwsOptions{}
-
-	if cli.Publisher.Type == publisher.AwsSQS || cli.Publisher.Type == publisher.AwsSNS {
-		flag.StringVar(&awsOptions.AccessKey, "accessKey", "", "access key for aws")
-		flag.StringVar(&awsOptions.SecretKey, "secretKey", "", "secret key for aws")
-		flag.StringVar(&awsOptions.Region, "region", "", "aws region")
-	}
-
-	if cli.Publisher.Type == publisher.AwsSQS {
-		flag.StringVar(&awsOptions.QueueUrl, "queue", "", "queue url")
-		cli.Publisher.Publisher.SetCredentials(awsOptions)
-	}
+	accessKey := flag.String("accessKey", "", "access key")
+	secretKey := flag.String("secretKey", "", "secret key")
+	region := flag.String("region", "", "region")
+	queueUrl := flag.String("queue", "", "queue url")
+	topic := flag.String("topic", "", "topic")
 
 	flag.Parse()
 
+	awsOptions := publisher.AwsOptions{
+		QueueUrl:    *queueUrl,
+		AccessKey:   *accessKey,
+		SecretKey:   *secretKey,
+		Region:      *region,
+		SnsTopicArn: *topic,
+	}
 	messageOptions := publisher.MessageOptions{
 		FilePath:       *filePath,
 		MessageCount:   *messageCount,
 		DelayInSeconds: *delayInSeconds,
 	}
 
-	if *filePath == "" {
-		helper.ColorizedText(helper.ColorGreen, "Insert a message format.")
-		input := bufio.NewScanner(os.Stdin)
-		input.Scan()
-		messageOptions.MessageFormat = input.Text()
+	var options interface{}
+
+	switch publisher.PublisherType(*publisherType) {
+	case publisher.AwsSQS:
+		options = awsOptions
+		break
+	default:
+		helper.ErrorText("other services are not supported yet !")
+		os.Exit(1)
 	}
 
+	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType), options)
 	cli.MessageOptions = messageOptions
 
 	return cli
