@@ -38,17 +38,7 @@ func NewCli() Cli {
 		SnsTopicArn: *topic,
 	}
 
-	cli.MessageOptions.FilePath = *filePath
-	cli.MessageOptions.MessageCount = *messageCount
-	cli.MessageOptions.DelayInSeconds = *delayInSeconds
-
-	hasValidationErr := cli.MessageOptions.Validate()
-	if hasValidationErr {
-		os.Exit(1)
-	}
-
 	var options interface{}
-
 	switch publisher.PublisherType(*publisherType) {
 	case publisher.AwsSQS:
 		options = awsOptions
@@ -59,7 +49,11 @@ func NewCli() Cli {
 	}
 
 	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType), options)
-
+	cli.MessageOptions = publisher.MessageOptions{
+		FilePath:       *filePath,
+		MessageCount:   *messageCount,
+		DelayInSeconds: *delayInSeconds,
+	}
 	return cli
 }
 
