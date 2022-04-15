@@ -54,7 +54,7 @@ func NewCli() Cli {
 		options = awsOptions
 		break
 	default:
-		helper.ErrorText("Other than SQS and SNS are not supported yet !")
+		helper.ErrorText("Services except SQS and SNS are not supported yet !")
 		os.Exit(1)
 	}
 
