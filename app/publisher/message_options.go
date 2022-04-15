@@ -6,24 +6,22 @@ import (
 )
 
 type MessageOptions struct {
-	FilePath       string
-	MessageFormat  string
-	MessageCount   int `validate:"gt=0"`
+	FilePath       string `validate:"required"`
+	MessageCount   int    `validate:"gt=0"`
 	DelayInSeconds int
 }
 
 func (m MessageOptions) Validate() bool {
-	if m.FilePath == "" && m.MessageFormat == "" {
-		helper.ErrorText("Must specify file path or message format!")
-		return true
-	}
-
 	hasError, errorFields := validator.CustomValidator.ValidateStruct(m)
 	if hasError {
 		for _, field := range errorFields {
 			switch field {
 			case "MessageCount":
 				helper.ErrorText("Message Count must be greater than zero !")
+				break
+			case "FilePath":
+				helper.ErrorText("File path must be defined !")
+				break
 			}
 		}
 	}

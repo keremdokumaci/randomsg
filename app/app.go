@@ -1,7 +1,6 @@
 package app
 
 import (
-	"bufio"
 	"flag"
 	"os"
 
@@ -37,13 +36,6 @@ func NewCli() Cli {
 		SecretKey:   *secretKey,
 		Region:      *region,
 		SnsTopicArn: *topic,
-	}
-
-	if *filePath == "" {
-		helper.ColorizedText(helper.ColorGreen, "Input a sample message.")
-		input := bufio.NewScanner(os.Stdin)
-		input.Scan()
-		cli.MessageOptions.MessageFormat = input.Text()
 	}
 
 	cli.MessageOptions.FilePath = *filePath
