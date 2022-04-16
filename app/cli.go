@@ -55,7 +55,6 @@ func (cli Cli) Run() {
 	}
 
 	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(strings.ToLower(cli.CliOptions.ServiceType)), string(content))
-
 	msgGenerator := messagegenerator.NewMessageGenerator(string(content))
 
 	for i := 0; i < cli.CliOptions.MessageCount; i++ {

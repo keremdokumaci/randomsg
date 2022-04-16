@@ -18,8 +18,15 @@ type SqsPublisher struct {
 	client  *sqs.Client
 }
 
-func NewSqsPublisher() SqsPublisher {
+func NewSqsPublisher(options AwsOptions) SqsPublisher {
 	publisher := SqsPublisher{}
+	publisher.options = options
+
+	hasErr := publisher.options.validate()
+	if hasErr {
+		helper.ErrorText("Check AWS related parameters in your file.")
+		os.Exit(1)
+	}
 
 	if publisher.options.AccessKey != "" && publisher.options.SecretKey != "" {
 		cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(publisher.options.Region), config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(publisher.options.AccessKey, publisher.options.SecretKey, "")))
@@ -65,5 +72,11 @@ func (p SqsPublisher) Publish(message string) {
 }
 
 func (p SqsPublisher) SetCredentials(credentials interface{}) {
-	p.options = credentials.(AwsOptions)
+	creds, ok := credentials.(AwsOptions)
+	if !ok {
+		helper.ErrorText("Aws Credentials are wrong ! Check the file !")
+		os.Exit(1)
+	}
+
+	p.options = creds
 }
