@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -42,7 +43,7 @@ func NewCli() Cli {
 }
 
 func (cli Cli) Run() {
-	cli.FileReader = filereader.NewFileReader(cli.CliOptions.FilePath)
+	cli.FileReader = filereader.NewFileReader(filepath.Ext(cli.CliOptions.FilePath))
 
 	fileContent := cli.FileReader.Read(cli.CliOptions.FilePath)
 	content, err := json.Marshal(fileContent)
