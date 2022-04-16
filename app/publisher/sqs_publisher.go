@@ -2,7 +2,6 @@ package publisher
 
 import (
 	"context"
-	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -25,14 +24,12 @@ func NewSqsPublisher(options AwsOptions) SqsPublisher {
 	hasErr := publisher.options.validate()
 	if hasErr {
 		helper.ErrorText("Check AWS related parameters in your file.")
-		os.Exit(1)
 	}
 
 	if publisher.options.AccessKey != "" && publisher.options.SecretKey != "" {
 		cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(publisher.options.Region), config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(publisher.options.AccessKey, publisher.options.SecretKey, "")))
 		if err != nil {
 			helper.ErrorText(err.Error())
-			os.Exit(1)
 		}
 
 		publisher.client = sqs.NewFromConfig(cfg)
@@ -43,7 +40,6 @@ func NewSqsPublisher(options AwsOptions) SqsPublisher {
 		cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(publisher.options.Region))
 		if err != nil {
 			helper.ErrorText(err.Error())
-			os.Exit(1)
 		}
 
 		publisher.client = sqs.NewFromConfig(cfg)
@@ -64,7 +60,6 @@ func (p SqsPublisher) Publish(message string) {
 
 	if err != nil {
 		helper.ErrorText(err.Error())
-		os.Exit(1)
 	}
 
 	helper.ColorizedText(helper.ColorGreen, *output.MessageId+" has published successfuly.")

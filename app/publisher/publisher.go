@@ -1,8 +1,6 @@
 package publisher
 
 import (
-	"os"
-
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
 )
 
@@ -26,7 +24,6 @@ func NewPublisher(publisherType PublisherType, credentials string) IPublisher {
 		p = NewSqsPublisher(awsOptions)
 	default:
 		helper.ErrorText("Couldn't find publisher !")
-		os.Exit(1)
 	}
 
 	return p

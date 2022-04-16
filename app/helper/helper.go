@@ -1,6 +1,9 @@
 package helper
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 type Color string
 
@@ -19,4 +22,5 @@ func ColorizedText(color Color, message string) {
 
 func ErrorText(message string) {
 	fmt.Println(ColorRed, message, string(ColorReset))
+	os.Exit(1)
 }

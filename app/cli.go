@@ -21,7 +21,6 @@ type Cli struct {
 }
 
 func NewCli() Cli {
-	// Initialize services, helpers
 	validator.NewValidator()
 	cli := Cli{}
 
@@ -37,10 +36,7 @@ func NewCli() Cli {
 		DelayInSeconds: *delayInSeconds,
 		ServiceType:    *publisherType,
 	}
-	hasError := cli.CliOptions.Validate()
-	if hasError {
-		os.Exit(1)
-	}
+	cli.CliOptions.Validate()
 
 	return cli
 }

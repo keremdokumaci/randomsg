@@ -1,8 +1,6 @@
 package filereader
 
 import (
-	"os"
-
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
 )
 
@@ -25,7 +23,6 @@ func NewFileReader(readerType string) IReader {
 		reader = JsonReader{}
 	default:
 		helper.ErrorText("Couldn't find the related file reader !")
-		os.Exit(1)
 	}
 
 	return reader

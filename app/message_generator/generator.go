@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"math"
 	"math/rand"
-	"os"
 	"time"
 
 	"github.com/google/uuid"
@@ -20,7 +19,6 @@ func NewMessageGenerator(content string) generator {
 	err := json.Unmarshal([]byte(content), &messageGenerator)
 	if err != nil {
 		helper.ErrorText(err.Error())
-		os.Exit(1)
 	}
 
 	return messageGenerator
@@ -35,7 +33,6 @@ func (g generator) GenerateMessage() string {
 	marshaledMessage, err := json.Marshal(message)
 	if err != nil {
 		helper.ErrorText(err.Error())
-		os.Exit(1)
 	}
 
 	return string(marshaledMessage)
@@ -56,7 +53,6 @@ func (g generator) generateField(field Field) interface{} {
 		break
 	default:
 		helper.ErrorText("Couldn't find the type.")
-		os.Exit(1)
 	}
 
 	return generatedField
