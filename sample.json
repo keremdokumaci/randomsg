@@ -6,7 +6,7 @@
     "message": {
         "fields":[
             {
-                "name":"order_id",
+                "name":"first_name",
                 "type":"string",
                 "rules":{
                         "format": "uuid"
