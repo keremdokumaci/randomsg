@@ -70,13 +70,3 @@ func (p SqsPublisher) Publish(message string) {
 	helper.ColorizedText(helper.ColorGreen, *output.MessageId+" has published successfuly.")
 
 }
-
-func (p SqsPublisher) SetCredentials(credentials interface{}) {
-	creds, ok := credentials.(AwsOptions)
-	if !ok {
-		helper.ErrorText("Aws Credentials are wrong ! Check the file !")
-		os.Exit(1)
-	}
-
-	p.options = creds
-}
