@@ -63,6 +63,5 @@ func (cli Cli) Run() {
 		time.Sleep(time.Duration(cli.CliOptions.DelayInSeconds) * time.Second)
 	}
 
-	// publish
 	os.Exit(1)
 }
