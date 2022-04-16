@@ -8,20 +8,22 @@
             {
                 "name":"order_id",
                 "type":"string",
-                "rules": [
-                    {
+                "rules":{
                         "format": "uuid"
                     }
-                ]
             },
             {
                 "name":"created_date",
-                "type":"time",
-                "rules": [
-                    {
-                        "gt":"2022-04-16T12:12:12Z"
+                "type":"time"
+            },
+            {
+                "name":"count",
+                "type":"int",
+                "rules":{
+                        "min":10,
+                        "max":20
                     }
-                ]
+                
             }
         ]
     }
