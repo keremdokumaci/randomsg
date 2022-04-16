@@ -18,7 +18,7 @@ type IPublisher interface {
 	SetCredentials(credentials interface{})
 }
 
-func NewPublisher(publisherType PublisherType, credentials interface{}) IPublisher {
+func NewPublisher(publisherType PublisherType, credentials string) IPublisher {
 	var p IPublisher
 
 	switch publisherType {

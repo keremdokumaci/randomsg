@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"flag"
 	"os"
 
@@ -30,25 +31,20 @@ func NewCli() Cli {
 	topic := flag.String("topic", "", "topic")
 	flag.Parse()
 
-	awsOptions := publisher.AwsOptions{
-		QueueUrl:    *queueUrl,
-		AccessKey:   *accessKey,
-		SecretKey:   *secretKey,
-		Region:      *region,
-		SnsTopicArn: *topic,
-	}
+	publisherCreds := make(map[string]interface{})
+	publisherCreds["accessKey"] = *accessKey
+	publisherCreds["secretKey"] = *secretKey
+	publisherCreds["region"] = *region
+	publisherCreds["queueUrl"] = *queueUrl
+	publisherCreds["topic"] = *topic
 
-	var options interface{}
-	switch publisher.PublisherType(*publisherType) {
-	case publisher.AwsSQS:
-		options = awsOptions
-		break
-	default:
-		helper.ErrorText("Services except SQS and SNS are not supported yet !")
+	marshaledCreds, err := json.Marshal(publisherCreds)
+	if err != nil {
+		helper.ErrorText(err.Error())
 		os.Exit(1)
 	}
 
-	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType), options)
+	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(*publisherType), string(marshaledCreds))
 	cli.MessageOptions = publisher.MessageOptions{
 		FilePath:       *filePath,
 		MessageCount:   *messageCount,

@@ -1,6 +1,7 @@
 package publisher
 
 import (
+	"encoding/json"
 	"os"
 
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
@@ -10,17 +11,19 @@ type IPublisherOptions interface {
 	validate() bool
 }
 
-func ConvertCredentials[T IPublisherOptions](creds interface{}) T {
-	converted, ok := creds.(T)
-	if !ok {
-		helper.ErrorText("couldn't get related parameters for your service ! Please check the parameters or run --help to see details !")
+func ConvertCredentials[T IPublisherOptions](creds string) T {
+	var publisherOptions T
+	err := json.Unmarshal([]byte(creds), &publisherOptions)
+
+	if err != nil {
+		helper.ErrorText(err.Error())
 		os.Exit(1)
 	}
 
-	hasValidationErr := converted.validate()
+	hasValidationErr := publisherOptions.validate()
 	if hasValidationErr {
 		os.Exit(1)
 	}
 
-	return converted
+	return publisherOptions
 }
