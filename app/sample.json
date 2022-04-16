@@ -1,0 +1,28 @@
+{
+    "access_key":"",
+    "secret_key":"",
+    "region":"",
+    "queue":"",
+    "message": {
+        "fields":[
+            {
+                "name":"order_id",
+                "type":"string",
+                "rules": [
+                    {
+                        "format": "uuid"
+                    }
+                ]
+            },
+            {
+                "name":"created_date",
+                "type":"time",
+                "rules": [
+                    {
+                        "gt":"2022-04-16T12:12:12Z"
+                    }
+                ]
+            }
+        ]
+    }
+}

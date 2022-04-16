@@ -45,28 +45,22 @@ func NewSqsPublisher() SqsPublisher {
 	return publisher
 }
 
-func (p SqsPublisher) Publish(message MessageOptions) {
+func (p SqsPublisher) Publish(message string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5) //todo: dynamic timeout
 	defer cancel()
 
-	for i := 0; i < message.MessageCount; i++ {
-		output, err := p.client.SendMessage(ctx, &sqs.SendMessageInput{
-			QueueUrl:          &p.options.QueueUrl,
-			MessageAttributes: map[string]types.MessageAttributeValue{},
-			MessageBody:       aws.String(""),
-		})
+	output, err := p.client.SendMessage(ctx, &sqs.SendMessageInput{
+		QueueUrl:          &p.options.QueueUrl,
+		MessageAttributes: map[string]types.MessageAttributeValue{},
+		MessageBody:       aws.String(message),
+	})
 
-		if err != nil {
-			helper.ErrorText(err.Error())
-			os.Exit(1)
-		}
-
-		helper.ColorizedText(helper.ColorBlue, *output.MessageId+" has published.")
-
-		if message.DelayInSeconds > 0 {
-			time.Sleep(time.Duration(message.DelayInSeconds) * time.Second)
-		}
+	if err != nil {
+		helper.ErrorText(err.Error())
+		os.Exit(1)
 	}
+
+	helper.ColorizedText(helper.ColorBlue, *output.MessageId+" has published.")
 
 }
 

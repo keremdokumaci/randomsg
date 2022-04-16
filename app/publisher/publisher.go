@@ -14,7 +14,7 @@ const (
 )
 
 type IPublisher interface {
-	Publish(message MessageOptions)
+	Publish(message string)
 	SetCredentials(credentials interface{})
 }
 
