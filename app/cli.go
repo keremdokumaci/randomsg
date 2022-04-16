@@ -6,9 +6,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	filereader "github.com/keremdokumaci/sqs-random-message-generator/app/file_reader"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
+	messagegenerator "github.com/keremdokumaci/sqs-random-message-generator/app/message_generator"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/publisher"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
 )
@@ -47,12 +49,20 @@ func NewCli() Cli {
 
 func (cli Cli) Run() {
 	fileContent := cli.FileReader.Read(cli.CliOptions.FilePath)
-	marshaledFileContent, err := json.Marshal(fileContent)
+	content, err := json.Marshal(fileContent)
 	if err != nil {
 		helper.ErrorText("An error occured while parsing file content to string.\n" + err.Error())
 	}
 
-	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(strings.ToLower(cli.CliOptions.ServiceType)), string(marshaledFileContent))
+	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(strings.ToLower(cli.CliOptions.ServiceType)), string(content))
+
+	msgGenerator := messagegenerator.NewMessageGenerator(string(content))
+
+	for i := 0; i < cli.CliOptions.MessageCount; i++ {
+		message := msgGenerator.GenerateMessage()
+		cli.Publisher.Publish(message)
+		time.Sleep(time.Duration(cli.CliOptions.DelayInSeconds) * time.Second)
+	}
 
 	// publish
 	os.Exit(1)
