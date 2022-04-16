@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
+	"github.com/keremdokumaci/random-message-generator/app/helper"
 )
 
 type generator struct {

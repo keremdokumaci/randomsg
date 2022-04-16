@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
-	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
+	"github.com/keremdokumaci/random-message-generator/app/helper"
+	"github.com/keremdokumaci/random-message-generator/app/validator"
 )
 
 type CliOptions struct {

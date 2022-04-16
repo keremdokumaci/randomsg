@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	filereader "github.com/keremdokumaci/sqs-random-message-generator/app/file_reader"
-	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
-	messagegenerator "github.com/keremdokumaci/sqs-random-message-generator/app/message_generator"
-	"github.com/keremdokumaci/sqs-random-message-generator/app/publisher"
-	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
+	filereader "github.com/keremdokumaci/random-message-generator/app/file_reader"
+	"github.com/keremdokumaci/random-message-generator/app/helper"
+	messagegenerator "github.com/keremdokumaci/random-message-generator/app/message_generator"
+	"github.com/keremdokumaci/random-message-generator/app/publisher"
+	"github.com/keremdokumaci/random-message-generator/app/validator"
 )
 
 type Cli struct {

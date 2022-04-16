@@ -1,4 +1,4 @@
-module github.com/keremdokumaci/sqs-random-message-generator
+module github.com/keremdokumaci/random-message-generator
 
 go 1.18
 

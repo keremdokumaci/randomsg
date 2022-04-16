@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
+	"github.com/keremdokumaci/random-message-generator/app/helper"
 )
 
 type JsonReader struct {
