@@ -6,11 +6,11 @@ import (
 )
 
 type AwsOptions struct {
-	AccessKey   string
-	SecretKey   string
+	AccessKey   string `json:"access_key"`
+	SecretKey   string `json:"secret_key"`
 	Region      string `validate:"required"`
-	QueueUrl    string
-	SnsTopicArn string
+	QueueUrl    string `json:"queue"`
+	SnsTopicArn string `json:"sns"`
 }
 
 func (a AwsOptions) validate() bool {

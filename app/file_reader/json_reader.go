@@ -11,7 +11,7 @@ type JsonReader struct {
 	content map[string]interface{}
 }
 
-func (r JsonReader) Read(filePath string) {
+func (r JsonReader) Read(filePath string) map[string]interface{} {
 	r.content = make(map[string]interface{})
 
 	file, err := os.Open(filePath)
@@ -27,4 +27,7 @@ func (r JsonReader) Read(filePath string) {
 		helper.ErrorText("An error occured while parsing the file\n" + err.Error())
 		os.Exit(1)
 	}
+	r.content = fileContent
+
+	return fileContent
 }

@@ -15,7 +15,7 @@ const (
 )
 
 type IReader interface {
-	Read(filePath string)
+	Read(filePath string) map[string]interface{}
 }
 
 func NewFileReader(readerType string) IReader {

@@ -1,11 +1,14 @@
 package app
 
 import (
+	"encoding/json"
 	"flag"
 	"os"
 	"path/filepath"
+	"strings"
 
 	filereader "github.com/keremdokumaci/sqs-random-message-generator/app/file_reader"
+	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/publisher"
 	"github.com/keremdokumaci/sqs-random-message-generator/app/validator"
 )
@@ -43,7 +46,13 @@ func NewCli() Cli {
 }
 
 func (cli Cli) Run() {
-	// cli.Publisher = publisher.NewPublisher()
+	fileContent := cli.FileReader.Read(cli.CliOptions.FilePath)
+	marshaledFileContent, err := json.Marshal(fileContent)
+	if err != nil {
+		helper.ErrorText("An error occured while parsing file content to string.\n" + err.Error())
+	}
+
+	cli.Publisher = publisher.NewPublisher(publisher.PublisherType(strings.ToLower(cli.CliOptions.ServiceType)), string(marshaledFileContent))
 
 	// publish
 	os.Exit(1)

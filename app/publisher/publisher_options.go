@@ -2,6 +2,7 @@ package publisher
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
 	"github.com/keremdokumaci/sqs-random-message-generator/app/helper"
@@ -19,7 +20,7 @@ func ConvertCredentials[T IPublisherOptions](creds string) T {
 		helper.ErrorText(err.Error())
 		os.Exit(1)
 	}
-
+	fmt.Println(publisherOptions)
 	hasValidationErr := publisherOptions.validate()
 	if hasValidationErr {
 		os.Exit(1)
