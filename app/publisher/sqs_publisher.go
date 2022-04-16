@@ -46,7 +46,7 @@ func NewSqsPublisher() SqsPublisher {
 }
 
 func (p SqsPublisher) Publish(message string) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5) //todo: dynamic timeout
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(5)) //todo: dynamic timeout
 	defer cancel()
 
 	output, err := p.client.SendMessage(ctx, &sqs.SendMessageInput{
@@ -60,7 +60,7 @@ func (p SqsPublisher) Publish(message string) {
 		os.Exit(1)
 	}
 
-	helper.ColorizedText(helper.ColorBlue, *output.MessageId+" has published.")
+	helper.ColorizedText(helper.ColorGreen, *output.MessageId+" has published successfuly.")
 
 }
 
