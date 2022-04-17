@@ -59,11 +59,16 @@ func (g generator) generateField(field Field) interface{} {
 }
 
 func (g generator) stringFieldValue(rules Rule) string {
-	var value string
+	var value string = randStringRunes(rand.Int())
+
 	if rules.Format == UUID {
 		value = uuid.NewString()
 	}
-
+	if rules.StartsWith != "" {
+		len := len(rules.StartsWith)
+		value = value[len:]
+		value = rules.StartsWith + value
+	}
 	return value
 }
 
@@ -93,4 +98,14 @@ func (g generator) timeFieldValue(rules Rule) time.Time {
 	delta := max - min
 	sec := rand.Int63n(delta) + min
 	return time.Unix(sec, 0)
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

@@ -29,7 +29,9 @@ type Field struct {
 }
 
 type Rule struct {
-	Format FieldFormat `json:"format"`
-	Min    interface{} `json:"min"`
-	Max    interface{} `json:"max"`
+	Format     FieldFormat `json:"format"`
+	Min        interface{} `json:"min"`
+	Max        interface{} `json:"max"`
+	StartsWith string      `json"startsWith"`
+	EndsWith   string      `json"endsWith"`
 }
