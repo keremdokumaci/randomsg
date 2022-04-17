@@ -46,8 +46,9 @@ You can find the sample in **master** branch as _sample.json_. All of the suppor
 #### Rules
 
 - _min_ & _max_ for numeric types
+- _startsWith_ & _endsWith_ for string type.
 - _format_ for string type.
-  - available values for _format_ : **uuid**,**startsWith**,**endsWith**
+  - available values for _format_ : **uuid**
 
 ## Contribution
 
