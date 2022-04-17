@@ -49,8 +49,6 @@ You can find the sample in **master** branch as _sample.json_. All of the suppor
 - _format_ for string type.
   - available values for _format_ : **uuid**,**startsWith**,**endsWith**
 
-#
-
 ## Contribution
 
 Feel free to contribute !
