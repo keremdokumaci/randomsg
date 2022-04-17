@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/keremdokumaci/random-message-generator/app/helper"
-	"github.com/keremdokumaci/random-message-generator/app/validator"
+	"github.com/keremdokumaci/randomsg/app/helper"
+	"github.com/keremdokumaci/randomsg/app/validator"
 )
 
 type CliOptions struct {

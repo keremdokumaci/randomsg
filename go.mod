@@ -1,4 +1,4 @@
-module github.com/keremdokumaci/random-message-generator
+module github.com/keremdokumaci/randomsg
 
 go 1.18
 

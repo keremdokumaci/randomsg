@@ -1,1 +1,1 @@
-# random-message-generator
+# randomsg

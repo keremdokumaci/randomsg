@@ -1,6 +1,6 @@
 package main
 
-import "github.com/keremdokumaci/random-message-generator/app"
+import "github.com/keremdokumaci/randomsg/app"
 
 func main() {
 	cli := app.NewCli()

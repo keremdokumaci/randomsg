@@ -1,7 +1,7 @@
 package publisher
 
 import (
-	"github.com/keremdokumaci/random-message-generator/app/helper"
+	"github.com/keremdokumaci/randomsg/app/helper"
 )
 
 type PublisherType string

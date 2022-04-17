@@ -3,7 +3,7 @@ package publisher
 import (
 	"encoding/json"
 
-	"github.com/keremdokumaci/random-message-generator/app/helper"
+	"github.com/keremdokumaci/randomsg/app/helper"
 )
 
 type IPublisherOptions interface {
