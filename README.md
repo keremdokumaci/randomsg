@@ -11,7 +11,7 @@ randomsg requires go with version 1.18+.
 Install go and run:
 
 ```sh
-go install randomsg
+go install "github.com/keremdokumaci/randomsg"@latest
 ```
 
 After installation of randomsg, ready to use. Just run :
