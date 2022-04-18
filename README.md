@@ -1,8 +1,6 @@
 # Randomsg
 
-## A CLI tool to generate random messages and publish to cloud services like (SQS,SNS,PUB/SUB and etc.)
-
-**Randomsg** is a basic CLI tool. Simply, adding message format, rules and required credentials for the service (like SNS) are enough to use it.
+A CLI tool to generate random messages and publish to cloud services like (SQS,SNS,PUB/SUB and etc.).
 
 ## Installation
 
