@@ -2,8 +2,10 @@ package messagegenerator
 
 import (
 	"encoding/json"
+	"fmt"
 	"math"
 	"math/rand"
+	"reflect"
 	"time"
 
 	"github.com/google/uuid"
@@ -25,41 +27,32 @@ func NewMessageGenerator(content string) generator {
 }
 
 func (g generator) GenerateMessage() string {
-	message := make(map[string]interface{})
-	for _, field := range g.Message.Fields {
-		message[field.Name] = g.generateField(field)
+	sampleMessage := make(map[string]interface{})
+	sampleMessage = g.Message.Sample
+
+	for field, value := range g.Message.Sample {
+		fieldType := reflect.TypeOf(value).Kind()
+		fmt.Println(field, value, fieldType)
+		if isNumeric(value) {
+			sampleMessage[field] = g.numericFieldValue(Rule{})
+		} else if fieldType == reflect.String {
+			sampleMessage[field] = g.stringFieldValue(Rule{})
+		} else if fieldType == reflect.Bool {
+			sampleMessage[field] = g.boolFieldValue()
+		} else {
+			fmt.Println("Complex Type") // todo:
+		}
 	}
 
-	marshaledMessage, err := json.Marshal(message)
+	marshaledMessage, err := json.Marshal(sampleMessage)
 	if err != nil {
 		helper.ErrorText(err.Error())
 	}
-
 	return string(marshaledMessage)
 }
 
-func (g generator) generateField(field Field) interface{} {
-	var generatedField interface{}
-
-	switch field.Type {
-	case String:
-		generatedField = g.stringFieldValue(field.Rules)
-		break
-	case Int:
-		generatedField = g.intFieldValue(field.Rules)
-		break
-	case Time:
-		generatedField = g.timeFieldValue(field.Rules)
-		break
-	default:
-		helper.ErrorText("Couldn't find the type.")
-	}
-
-	return generatedField
-}
-
 func (g generator) stringFieldValue(rules Rule) string {
-	var value string = randStringRunes(rand.Int())
+	var value string = randStringRunes(rand.Intn(100)) // todo: 100 -> as rule (length range vs)
 
 	if rules.Format == UUID {
 		value = uuid.NewString()
@@ -72,7 +65,7 @@ func (g generator) stringFieldValue(rules Rule) string {
 	return value
 }
 
-func (g generator) intFieldValue(rules Rule) int {
+func (g generator) numericFieldValue(rules Rule) int {
 	var value int
 	rand.Seed(time.Now().UnixNano())
 	if rules.Min != nil && rules.Max != nil {
@@ -100,6 +93,11 @@ func (g generator) timeFieldValue(rules Rule) time.Time {
 	return time.Unix(sec, 0)
 }
 
+func (g generator) boolFieldValue() bool {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(2) == 1
+}
+
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randStringRunes(n int) string {
@@ -108,4 +106,21 @@ func randStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+func isNumeric(val interface{}) bool {
+	stringValue := fmt.Sprintf("%v", val)
+
+	dotFound := false
+	for _, v := range stringValue {
+		if v == '.' {
+			if dotFound {
+				return false
+			}
+			dotFound = true
+		} else if v < '0' || v > '9' {
+			return false
+		}
+	}
+	return true
 }

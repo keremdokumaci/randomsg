@@ -19,13 +19,8 @@ type MessageJsonRepresentation struct {
 }
 
 type Message struct {
-	Fields []Field `json:"fields"`
-}
-
-type Field struct {
-	Name  string    `json:"name"`
-	Type  FieldType `json:"type"`
-	Rules Rule      `json:"rules"`
+	Sample map[string]interface{} `json:"sample"`
+	Rules  map[string]Rule        `json:"rules"`
 }
 
 type Rule struct {
@@ -34,4 +29,8 @@ type Rule struct {
 	Max        interface{} `json:"max"`
 	StartsWith string      `json"startsWith"`
 	EndsWith   string      `json"endsWith"`
+}
+
+func (m Message) GetRuleOfField(fieldName string) {
+
 }
