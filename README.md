@@ -26,12 +26,12 @@ randomsg **args**
 
 _This table will be uptaded for new features._
 
-| Parameter | Need to know                       | Description                                            |
-| --------- | ---------------------------------- | ------------------------------------------------------ |
-| --service | sqs and sns are supported now.     | service which the message will be sent.                |
-| --file    | .json files are supported now.     | file which has message format and service credentials. |
-| --count   | should be greater than 0.          | count of messages to publish                           |
-| --delay   | should be greater than or equaş 0. | delay before each message publish.                     |
+| Parameter | Need to know                          | Description                                            |
+| --------- | ------------------------------------- | ------------------------------------------------------ |
+| --service | sqs and sns are supported now.        | service which the message will be sent.                |
+| --file    | .json files are supported now.        | file which has message format and service credentials. |
+| --count   | should be greater than 0.             | count of messages to publish                           |
+| --delay   | should be greater than or equal to 0. | delay before each message publish.                     |
 
 ## Sample Message File
 
@@ -40,7 +40,7 @@ You can find the sample in **master** branch as _sample.json_. All of the suppor
 #### Types
 
 - string
-- All numeric fields (int,float ..)
+- all numeric fields (int,float ..)
 - time
 - bool
 
