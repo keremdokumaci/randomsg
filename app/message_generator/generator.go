@@ -32,7 +32,7 @@ func (g generator) GenerateMessage() string {
 
 	for field, value := range g.Message.Sample {
 		fieldType := reflect.TypeOf(value).Kind()
-		fmt.Println(field, value, fieldType)
+
 		if isNumeric(value) {
 			sampleMessage[field] = g.numericFieldValue(Rule{})
 		} else if fieldType == reflect.String {
