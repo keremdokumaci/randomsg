@@ -36,10 +36,9 @@ You can find the sample in **master** branch as _sample.json_. All of the suppor
 #### Types
 
 - string
-- int
+- All numeric fields (int,float ..)
 - time
-- float
-- char
+- bool
 
 #### Rules
 
