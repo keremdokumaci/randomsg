@@ -1,8 +1,8 @@
 {
     "access_key":"",
     "secret_key":"",
-    "region":"asdsad",
-    "queue":"asdasdasd",
+    "region":"eu-west-1",
+    "queue":"samle-queue",
     "message": {
         "sample": {
             "first_name":"Kerem",
@@ -11,13 +11,13 @@
             "birth_date":"2022-04-12T12:23:12Z",
             "siblings": [
                 {
-                    "first_name":"Yusuf Eren",
-                    "last_name":"Dokumaci",
+                    "first_name":"XX XX",
+                    "last_name":"YYYY",
                     "age": 17
                 },
                 {
-                    "first_name":"Ömer Mert",
-                    "last_name":"Dokumaci",
+                    "first_name":"ZZ ZZ",
+                    "last_name":"YYYY",
                     "age": 11
                 }
             ],
